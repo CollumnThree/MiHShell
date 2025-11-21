@@ -1,6 +1,7 @@
 all:
-	mkdir -p build
-	@clang++ -std=c++23 -o build/shell src/*.cpp
+	@mkdir -p build
+	@echo "Compiling"
+	@clang++ -std=c++20 -Isec/headers -o build/shell src/*.cpp
 
 run:
 	@exec build/shell
