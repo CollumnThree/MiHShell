@@ -6,14 +6,16 @@
 
 * Shell Interpreter
 
+* Add support for signals
+
 ## Bug Fixes:
 
 * No known bugs
 
-##Chores
+## Chores
 
 * Add a README
 
-* Organize code and better comment code
+* Organize and better comment code
 
 * Standardize Cases
