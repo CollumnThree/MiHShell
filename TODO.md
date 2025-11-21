@@ -8,8 +8,8 @@
 
 * Organize Code
 
-* Remove Bad C++ Practices
+* Add a README
 
-# Bug Fixes:
+## Bug Fixes:
 
 * No known bugs
