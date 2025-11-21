@@ -6,10 +6,14 @@
 
 * Shell Interpreter
 
-* Organize Code
-
-* Add a README
-
 ## Bug Fixes:
 
 * No known bugs
+
+##Chores
+
+* Add a README
+
+* Organize code and better comment code
+
+* Standardize Cases
