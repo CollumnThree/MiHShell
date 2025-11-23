@@ -13,7 +13,6 @@
 #include <vector>
 #include "headers/utils.hpp"
 #include "headers/builtin.hpp"
-#include <filesystem>
 
 int main(int argc, char *argv[]) {
   std::string input;
@@ -22,12 +21,12 @@ int main(int argc, char *argv[]) {
     std::getline(std::cin, input);
     std::vector<std::string> full_command = split_args(input);
     std::vector<char *> command_char;
-    bool IsNBCommand = true;
+    //Check if the vector is empty
+    if(full_command.empty()){
+        continue;
+    }
     //Check if the inserted command is a builtin function(e.g: cd)
     if (IsBCommand(full_command.at(0)) == true) {
-        IsNBCommand = false;
-    }
-    if (IsNBCommand == false) {
         std::map<std::string, int> CommandList = BCommands;
         switch (CommandList[full_command.at(0)]) {
             case 1:
@@ -45,10 +44,6 @@ int main(int argc, char *argv[]) {
     full_command.clear();
     //Push command_char a nullptr to make it a null terminated string
     command_char.push_back(nullptr);
-    //Do a continue if the vector is empty
-    if (command_char.at(0) == nullptr) {
-        continue;
-    }
     pid_t command = fork();
     //If fork() fails
     if (command < 0) {
