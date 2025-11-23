@@ -1,31 +1,32 @@
 #include <algorithm>
 #include <cstdio>
+#include <exception>
+#include <filesystem>
 #include <iostream>
+#include <map>
+#include <ostream>
 #include <sched.h>
 #include <signal.h>
 #include <string>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
-#include <filesystem>
+#include "headers/utils.hpp"
 #include "headers/builtin.hpp"
-namespace fs = std::filesystem;
-
-
-std::vector<std::string> split_args(std::string sen);
-char *convert(const std::string &s);
+#include <filesystem>
 
 int main(int argc, char *argv[]) {
   std::string input;
-  const std::string exit_cmd = "exit";
   while (true) {
     std::cout << ">>> ";
     std::getline(std::cin, input);
-    if (input == exit_cmd) {
-      break;
-    }
     std::vector<std::string> full_command = split_args(input);
     std::vector<char *> command_char;
+    bool IsNBCommand = true;
+    //Check if the inserted command is a builtin function(e.g: cd)
+    if (IsBCommand(full_command.at(0)) == true) {
+        IsNBCommand = false;
+    }
     // Converts full_command into a char * vector
     std::transform(full_command.begin(), full_command.end(),
                    std::back_inserter(command_char), convert);
@@ -35,6 +36,18 @@ int main(int argc, char *argv[]) {
     //Do a continue if the vector is empty
     if (command_char.at(0) == nullptr) {
         continue;
+    }
+    if (IsNBCommand == false) {
+        std::map<std::string, int> CommandList = BCommands;
+        switch (CommandList[command_char.at(0)]) {
+            case 1:
+                std::cout << "Not implemented\n";
+                continue;
+            case 2:
+                std::cout << PWDFunc() << "\n";
+                continue;
+
+        }
     }
     pid_t command = fork();
     //If fork() fails
@@ -48,11 +61,8 @@ int main(int argc, char *argv[]) {
     // Child Process
     else if (command == 0) {
       execvp(command_char.at(0), command_char.data());
-      command_char.clear();
-      for (char *ptr : command_char) {
-        delete(ptr);
-      }
-      perror("Error");
+      perror("MihShell");
+      _exit(1);
     }
     // Parent Process
     else {
@@ -62,6 +72,8 @@ int main(int argc, char *argv[]) {
     for (char *ptr : command_char) {
       delete(ptr);
     }
+    command_char.clear();
+
   }
 
   return 0;
