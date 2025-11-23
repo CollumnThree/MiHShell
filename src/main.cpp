@@ -27,6 +27,18 @@ int main(int argc, char *argv[]) {
     if (IsBCommand(full_command.at(0)) == true) {
         IsNBCommand = false;
     }
+    if (IsNBCommand == false) {
+        std::map<std::string, int> CommandList = BCommands;
+        switch (CommandList[full_command.at(0)]) {
+            case 1:
+                std::cout << "Not implemented\n";
+                continue;
+            case 2:
+                std::cout << PWDFunc() << "\n";
+                continue;
+
+        }
+    }
     // Converts full_command into a char * vector
     std::transform(full_command.begin(), full_command.end(),
                    std::back_inserter(command_char), convert);
@@ -36,18 +48,6 @@ int main(int argc, char *argv[]) {
     //Do a continue if the vector is empty
     if (command_char.at(0) == nullptr) {
         continue;
-    }
-    if (IsNBCommand == false) {
-        std::map<std::string, int> CommandList = BCommands;
-        switch (CommandList[command_char.at(0)]) {
-            case 1:
-                std::cout << "Not implemented\n";
-                continue;
-            case 2:
-                std::cout << PWDFunc() << "\n";
-                continue;
-
-        }
     }
     pid_t command = fork();
     //If fork() fails
