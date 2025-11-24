@@ -8,7 +8,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
-#include <filesystem>
 #include "headers/utils.hpp"
 #include "headers/builtin.hpp"
 
@@ -29,10 +28,8 @@ int main(int argc, char *argv[]) {
         auto& CommandList = BCommands;
         switch (CommandList[full_command.at(0)]) {
             case 1:
-                std::transform(full_command.begin(), full_command.end(),
-                std::back_inserter(command_char), convert);
-                chdir(command_char.at(1));
-                CurrentDir = command_char.at(1);
+                chdir(full_command.at(1).c_str());
+                CurrentDir = PWDFunc();
                 continue;
             case 2:
                 std::cout << PWDFunc() << "\n";
