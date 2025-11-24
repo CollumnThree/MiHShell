@@ -10,6 +10,10 @@
 
 * Add support for piping, background proceses, etc..
 
+* History
+
+* Environment variables
+
 ## Bug Fixes:
 
 * No known bugs
