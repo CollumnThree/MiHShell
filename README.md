@@ -13,6 +13,7 @@ More planned in the future(take a look at [TODO.md](TODO.md)).
 This project should build under any POSIX compatible OS. Make an issue or PR if not.
 
 Building:
+This project uses Clang to compile, ``make`` to build:
 ```make```
 
 Running:
