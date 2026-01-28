@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <filesystem>
+#include <format>
 #include <iostream>
 #include <map>
 #include <sched.h>
@@ -13,11 +15,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
-#include <format>
-
+namespace fs = std::filesystem;
 
 const auto HomeDir = std::format("/home/{}", getenv("USER"));
-auto CurrentDir = PWDFunc();
+auto CurrentDir = fs::current_path().string();
 
 int main(int argc, char *argv[]) {
   std::string input;
@@ -44,10 +45,10 @@ int main(int argc, char *argv[]) {
           continue;
         }
         chdir(full_command.at(1).c_str());
-        CurrentDir = PWDFunc();
+        CurrentDir = fs::current_path().string();
         continue;
       case 2:
-        std::cout << PWDFunc() << "\n";
+        std::cout << fs::current_path().string() << "\n";
         continue;
       case 3:
         exit(0);

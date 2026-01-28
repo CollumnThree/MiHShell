@@ -6,7 +6,6 @@
 #include <string>
 
 bool IsBCommand(std::string str);
-std::string PWDFunc();
 inline std::map<std::string, int> BCommands= {
     {"cd", 1},
     {"pwd", 2},

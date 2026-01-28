@@ -1,8 +1,6 @@
 #include <string>
 #include <map>
 #include "headers/builtin.hpp"
-#include <filesystem>
-namespace fs = std::filesystem;
 
 //Takes the first position in the full_command vector and checks if fits a built-in function
 bool IsBCommand(std::string str){
@@ -19,6 +17,3 @@ bool IsBCommand(std::string str){
 }
 
 
-std::string PWDFunc(){
-    return fs::current_path();
-}
