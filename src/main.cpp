@@ -1,12 +1,11 @@
 #include "headers/KillProcess.hpp"
 #include "headers/builtin.hpp"
 #include "headers/utils.hpp"
+#include "headers/Globals.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
-#include <format>
 #include <iostream>
-#include <map>
 #include <sched.h>
 #include <signal.h>
 #include <string>
@@ -16,10 +15,8 @@
 #include <vector>
 namespace fs = std::filesystem;
 
-const auto HomeDir = std::format("/home/{}", getenv("USER"));
-auto CurrentDir = fs::current_path().string();
 
-int main(int argc, char *argv[]) {
+int main() {
   std::string input;
   std::vector<char *> ArgV;
   while (true) {
@@ -34,29 +31,34 @@ int main(int argc, char *argv[]) {
       continue;
     }
     // Check if the inserted command is a builtin function(e.g: cd)
-    if (IsBCommand(FullCommand.at(0)) == true) {
-      auto &CommandList = BCommands;
-      switch (CommandList[FullCommand.at(0)]) {
-      case 1:
-        if (FullCommand.size() < 2) {
+    switch (Convert(FullCommand.at(0))) {
+    case CD:
+      if (FullCommand.size() < 2) {
+        if (chdir(HomeDir.c_str()) != 0) {
+          perror("MiHShell: cd");
+        } else {
           CurrentDir = HomeDir;
-          chdir(HomeDir.c_str());
-          continue;
         }
-        chdir(FullCommand.at(1).c_str());
-        CurrentDir = fs::current_path().string();
         continue;
-      case 2:
-        std::cout << fs::current_path().string() << "\n";
-        continue;
-      case 3:
-        exit(0);
       }
+      if (chdir(FullCommand.at(1).c_str()) != 0) {
+        perror("MiHShell: cd");
+      } else {
+        CurrentDir = fs::current_path().string();
+      }
+      continue;
+    case PWD:
+      std::cout << fs::current_path().string() << "\n";
+      continue;
+    case EXIT:
+      exit(0);
+    case NOT_BUILTIN:
+      break;
     }
     // Insert the values into ArgV
     ArgV.reserve(FullCommand.size() + 1);
     for (auto &s : FullCommand) {
-      ArgV.push_back(s.data()); 
+      ArgV.push_back(s.data());
     }
     // Push a nullptr to ArgV make it a null terminated string(For later
     // use in execvp)

@@ -1,7 +1,11 @@
-all:
+debug:
 	@mkdir -p build
 	@echo "Compiling Project"
-	@clang++ -std=c++20 -Isec/headers -o build/shell src/*.cpp
+	@clang++ -std=c++20 -fsanitize=address,undefined -fno-omit-frame-pointer -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -Wpedantic -O0 -g -o build/shell src/*.cpp
 
 run:
 	@exec build/shell
+release:
+	@mkdir -p build
+	@echo "Compiling Project"
+	@clang++ -std=c++20 -march=native -O3 -o build/shell src/*.cpp

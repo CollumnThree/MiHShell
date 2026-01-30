@@ -1,10 +1,9 @@
 #include <csignal>
 #include <unistd.h>
 #include <stdlib.h>
+#include "headers/Globals.hpp"
 
-int ChildPid = -1;
 
-
-void KillProcess(int sig){
+void KillProcess([[maybe_unused]] int sig){
     kill(ChildPid, SIGTERM);
 }
