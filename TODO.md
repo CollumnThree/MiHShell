@@ -2,7 +2,7 @@
 
 ## Features:
 
-* ~~Built-in Commands(such as cd, exit, pwd)~~;
+* ~~cd, pwd and exit~~;
 
 * Add support for signals;
 
@@ -10,11 +10,11 @@
 
 * History;
 
-* Environment variables.
+* Setting environment variables with export;
 
-* Support for a .mihshrc
+* Support for a .mihshrc;
 
-* Support for customization
+* Support for customization;
 
 ## Bug Fixes:
 
@@ -22,8 +22,5 @@
 
 ## Chores
 
-* ~~Add a README~~;
-
 * Organize and better comment code;
 
-* Standardize cases to Pascal Case.

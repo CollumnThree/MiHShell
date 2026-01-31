@@ -5,4 +5,4 @@
 
 extern int ChildPid;
 extern std::string HomeDir;
-extern std::string CurrentDir;
+extern std::string DisplayedDir;

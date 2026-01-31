@@ -1,7 +1,7 @@
-#include "headers/KillProcess.hpp"
-#include "headers/builtin.hpp"
-#include "headers/utils.hpp"
 #include "headers/Globals.hpp"
+#include "headers/SignalHandling.hpp"
+#include "headers/Builtin.hpp"
+#include "headers/Parser.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
@@ -15,17 +15,16 @@
 #include <vector>
 namespace fs = std::filesystem;
 
-
 int main() {
-  std::string input;
+  std::string Input;
   std::vector<char *> ArgV;
+  void (*KPPointer)(int);
+  KPPointer = &KillProcess;
+  signal(SIGINT, KPPointer);
   while (true) {
-    std::cout << CurrentDir << ">>> ";
-    std::getline(std::cin, input);
-    std::vector<std::string> FullCommand = split_args(input);
-    // Pointer pointing to KillProcess function(for later use in signal())
-    void (*KPPointer)(int);
-    KPPointer = &KillProcess;
+    std::cout << DisplayedDir << ">>> ";
+    std::getline(std::cin, Input);
+    std::vector<std::string> FullCommand = SplitArgs(Input);
     // Check if the vector is empty
     if (FullCommand.empty()) {
       continue;
@@ -37,14 +36,14 @@ int main() {
         if (chdir(HomeDir.c_str()) != 0) {
           perror("MiHShell: cd");
         } else {
-          CurrentDir = HomeDir;
+          DisplayedDir = HomeDir;
         }
         continue;
       }
       if (chdir(FullCommand.at(1).c_str()) != 0) {
         perror("MiHShell: cd");
       } else {
-        CurrentDir = fs::current_path().string();
+        DisplayedDir = fs::current_path().string();
       }
       continue;
     case PWD:
@@ -63,22 +62,22 @@ int main() {
     // Push a nullptr to ArgV make it a null terminated string(For later
     // use in execvp)
     ArgV.push_back(nullptr);
-    pid_t command = fork();
+    pid_t Command = fork();
     // If fork() fails
-    if (command < 0) {
-      std::cout << "fork() fail \n";
+    if (Command < 0) {
+      perror("MiHShell: fork");
       continue;
     }
     // Child Process
-    else if (command == 0) {
+    else if (Command == 0) {
       execvp(FullCommand.at(0).c_str(), ArgV.data());
-      perror("MihShell");
+      perror("MiHShell");
       _exit(1);
     }
     // Parent Process
     else {
-      ChildPid = command;
-      signal(SIGINT, KPPointer);
+      ChildPid = Command;
+      
       wait(NULL);
     }
     // Clear Vectors
