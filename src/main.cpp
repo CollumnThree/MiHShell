@@ -4,6 +4,7 @@
 #include "headers/Parser.hpp"
 #include <cstdio>
 #include <cstdlib>
+#include <exception>
 #include <filesystem>
 #include <iostream>
 #include <sched.h>
@@ -18,9 +19,7 @@ namespace fs = std::filesystem;
 int main() {
   std::string Input;
   std::vector<char *> ArgV;
-  void (*KPPointer)(int);
-  KPPointer = &KillProcess;
-  signal(SIGINT, KPPointer);
+  signal(SIGINT, TerminateProcess);
   while (true) {
     std::cout << DisplayedDir << ">>> ";
     std::getline(std::cin, Input);
