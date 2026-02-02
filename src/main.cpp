@@ -1,10 +1,9 @@
-#include "headers/Globals.hpp"
-#include "headers/SignalHandling.hpp"
 #include "headers/Builtin.hpp"
+#include "headers/Globals.hpp"
 #include "headers/Parser.hpp"
+#include "headers/SignalHandling.hpp"
 #include <cstdio>
 #include <cstdlib>
-#include <exception>
 #include <filesystem>
 #include <iostream>
 #include <sched.h>
@@ -19,38 +18,38 @@ namespace fs = std::filesystem;
 int main() {
   std::string Input;
   std::vector<char *> ArgV;
-  signal(SIGINT, TerminateProcess);
+  signal(SIGINT, SignalHandling::TerminateProcess);
   while (true) {
-    std::cout << DisplayedDir << ">>> ";
+    std::cout << Globals::DisplayedDir << ">>> ";
     std::getline(std::cin, Input);
-    std::vector<std::string> FullCommand = SplitArgs(Input);
+    std::vector<std::string> FullCommand = Parser::SplitArgs(Input);
     // Check if the vector is empty
     if (FullCommand.empty()) {
       continue;
     }
     // Check if the inserted command is a builtin function(e.g: cd)
-    switch (Convert(FullCommand.at(0))) {
-    case CD:
+    switch (BuiltIn::Convert(FullCommand.at(0))) {
+    case BuiltIn::CD:
       if (FullCommand.size() < 2) {
-        if (chdir(HomeDir.c_str()) != 0) {
+        if (chdir(Globals::HomeDir.c_str()) != 0) {
           perror("MiHShell: cd");
         } else {
-          DisplayedDir = HomeDir;
+          Globals::DisplayedDir = Globals::HomeDir;
         }
         continue;
       }
       if (chdir(FullCommand.at(1).c_str()) != 0) {
         perror("MiHShell: cd");
       } else {
-        DisplayedDir = fs::current_path().string();
+        Globals::DisplayedDir = fs::current_path().string();
       }
       continue;
-    case PWD:
+    case BuiltIn::PWD:
       std::cout << fs::current_path().string() << "\n";
       continue;
-    case EXIT:
+    case BuiltIn::EXIT:
       exit(0);
-    case NOT_BUILTIN:
+    case BuiltIn::NOT_BUILTIN:
       break;
     }
     // Insert the values into ArgV
@@ -75,8 +74,7 @@ int main() {
     }
     // Parent Process
     else {
-      ChildPid = Command;
-      
+      Globals::ChildPid = Command;
       wait(NULL);
     }
     // Clear Vectors

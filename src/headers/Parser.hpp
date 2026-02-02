@@ -3,5 +3,7 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> SplitArgs(const std::string& sen);
+namespace Parser {
+  std::vector<std::string> SplitArgs(const std::string& sen);
+}
 

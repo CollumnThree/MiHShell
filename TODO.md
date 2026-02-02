@@ -16,6 +16,10 @@
 
 * Support for customization;
 
+* Better Parser;
+
+* Scripting support.
+
 ## Bug Fixes:
 
 * No known bugs

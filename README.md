@@ -14,7 +14,13 @@ This project should build under any POSIX compatible OS. Make an issue or PR if 
 
 Building:
 This project uses Clang to compile, ``make`` to build:
-```make```
+
+Release Version:
+``make release``
+
+Debug Version(Recommended for contributions):
+
+``make(or make debug)``
 
 Running:
 ```make run```

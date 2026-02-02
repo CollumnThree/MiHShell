@@ -6,6 +6,6 @@
 
 
 /// Uses SIGINT to interrupt the process
-void TerminateProcess([[maybe_unused]] int sig){
-    kill(ChildPid, SIGINT);
+void SignalHandling::TerminateProcess([[maybe_unused]] int sig){
+    kill(Globals::ChildPid, SIGINT);
 }

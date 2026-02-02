@@ -3,4 +3,6 @@
 #include <sys/types.h>
 
 
-void TerminateProcess(int sig);
+namespace SignalHandling{
+  void TerminateProcess(int sig);
+}
